@@ -6,8 +6,10 @@ def get_template(template):
         return loader.select_template(template)
     return loader.get_template(template)
 
+
 class BlockNotFound(Exception):
     pass
+
 
 def render_template_block(template, block, context):
     """
@@ -15,6 +17,7 @@ def render_template_block(template, block, context):
     This template should have previously been rendered.
     """
     return render_template_block_nodelist(template.nodelist, block, context)
+
     
 def render_template_block_nodelist(nodelist, block, context):
     for node in nodelist:
@@ -36,6 +39,7 @@ def render_template_block_nodelist(nodelist, block, context):
                 pass
     raise BlockNotFound
 
+
 def render_block_to_string(template_name, block, dictionary=None,
                            context_instance=None):
     """
@@ -51,6 +55,7 @@ def render_block_to_string(template_name, block, dictionary=None,
         context_instance = Context(dictionary)
     t.render(context_instance)
     return render_template_block(t, block, context_instance)
+
 
 def direct_block_to_template(request, template, block, extra_context=None,
                              mimetype=None, **kwargs):
@@ -70,3 +75,4 @@ def direct_block_to_template(request, template, block, extra_context=None,
     t = get_template(template)
     t.render(c)
     return HttpResponse(render_template_block(t, block, c), mimetype=mimetype)
+
