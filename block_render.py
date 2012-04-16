@@ -22,18 +22,21 @@ def render_template_block_nodelist(nodelist, block, context):
         for key in ('nodelist', 'nodelist_true', 'nodelist_false'):
             if hasattr(node, key):
                 try:
-                    return render_template_block_nodelist(getattr(node, key), block, context)
+                    return render_template_block_nodelist(getattr(node, key),
+                                                          block, context)
                 except:
                     pass
     for node in nodelist:
         if isinstance(node, ExtendsNode):
             try:
-                return render_template_block(node.get_parent(context), block, context)
+                return render_template_block(node.get_parent(context),
+                                             block, context)
             except BlockNotFound:
                 pass
     raise BlockNotFound
 
-def render_block_to_string(template_name, block, dictionary=None, context_instance=None):
+def render_block_to_string(template_name, block, dictionary=None,
+                           context_instance=None):
     """
     Loads the given template_name and renders the given block with the given dictionary as
     context. Returns a string.
@@ -47,7 +50,8 @@ def render_block_to_string(template_name, block, dictionary=None, context_instan
     t.render(context_instance)
     return render_template_block(t, block, context_instance)
 
-def direct_block_to_template(request, template, block, extra_context=None, mimetype=None, **kwargs):
+def direct_block_to_template(request, template, block, extra_context=None,
+                             mimetype=None, **kwargs):
     """
     Render a given block in a given template with any extra URL parameters in the context as
     ``{{ params }}``.
