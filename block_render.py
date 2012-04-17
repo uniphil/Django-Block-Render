@@ -15,6 +15,7 @@ def render_template_block(template, block, context):
     """
     Renders a single block from a template.
     This template should have previously been rendered.
+
     """
     return render_template_block_nodelist(template.nodelist, block, context)
 
@@ -42,10 +43,11 @@ def render_template_block_nodelist(nodelist, block, context):
 
 def render_block_to_string(template_name, block, dictionary=None,
                            context_instance=None):
-    """
+    """Return a string
+    
     Loads the given template_name and renders the given block with the
     given dictionary as context.
-    Returns a string.
+    
     """
     dictionary = dictionary or {}
     t = get_template(template_name)
@@ -62,6 +64,7 @@ def direct_block_to_template(request, template, block, extra_context=None,
     """
     Render a given block in a given template with any extra URL
     parameters in the context as ``{{ params }}``.
+    
     """
     if extra_context is None:
     	extra_context = {}
