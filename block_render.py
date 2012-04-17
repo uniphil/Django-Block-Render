@@ -28,17 +28,21 @@ def _render_template_block_nodelist(nodelist, block, context):
         for key in ('nodelist', 'nodelist_true', 'nodelist_false'):
             if hasattr(node, key):
                 try:
-                    return _render_template_block_nodelist(getattr(node, key),
-                                                          block, context)
+                    rendered = _render_template_block_nodelist(
+                        getattr(node, key), block, context)
                 except:
                     pass
+                else:
+                    return rendered
     for node in nodelist:
         if isinstance(node, ExtendsNode):
             try:
-                return render_template_block(node.get_parent(context),
-                                             block, context)
+                rendered = render_template_block(
+                    node.get_parent(context), block, context)
             except BlockNotFound:
                 pass
+            else:
+                return rendered
     raise BlockNotFound
 
 
