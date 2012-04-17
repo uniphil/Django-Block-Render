@@ -1,7 +1,7 @@
 from django.template.loader_tags import BlockNode, ExtendsNode
 from django.template import loader, Context, RequestContext, TextNode
 
-def get_template(template):
+def _get_template(template):
     if isinstance(template, (tuple, list)):
         return loader.select_template(template)
     return loader.get_template(template)
@@ -17,17 +17,17 @@ def render_template_block(template, block, context):
     This template should have previously been rendered.
 
     """
-    return render_template_block_nodelist(template.nodelist, block, context)
+    return _render_template_block_nodelist(template.nodelist, block, context)
 
     
-def render_template_block_nodelist(nodelist, block, context):
+def _render_template_block_nodelist(nodelist, block, context):
     for node in nodelist:
         if isinstance(node, BlockNode) and node.name == block:
             return node.render(context)
         for key in ('nodelist', 'nodelist_true', 'nodelist_false'):
             if hasattr(node, key):
                 try:
-                    return render_template_block_nodelist(getattr(node, key),
+                    return _render_template_block_nodelist(getattr(node, key),
                                                           block, context)
                 except:
                     pass
@@ -50,7 +50,7 @@ def render_block_to_string(template_name, block, dictionary=None,
     
     """
     dictionary = dictionary or {}
-    t = get_template(template_name)
+    t = _get_template(template_name)
     if context_instance:
         context_instance.update(dictionary)
     else:
@@ -75,7 +75,7 @@ def direct_block_to_template(request, template, block, extra_context=None,
         else:
             dictionary[key] = value
     c = RequestContext(request, dictionary)
-    t = get_template(template)
+    t = _get_template(template)
     t.render(c)
     return HttpResponse(render_template_block(t, block, c), mimetype=mimetype)
 
