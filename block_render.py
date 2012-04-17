@@ -8,6 +8,7 @@ def _get_template(template):
 
 
 class BlockNotFound(Exception):
+    """The requested block did not exist."""
     pass
 
 
